@@ -12,6 +12,7 @@
         public $price;
         public $available_unit;
         public $taste;
+        public $updated_unit;
 
         public function __construct($db)
         {
@@ -26,14 +27,11 @@
         //store product
         public function store() {
             //query
-            // $query = 'INSERT INTO '. $this->table. ' (name, price, available_unit, taste) VALUES (:name, :price, :available_unit, :taste)';
-
             $query = 'INSERT INTO '. $this->table . ' 
             SET name = :name, price = :price, available_unit = :available_unit, taste = :taste';
 
             //prep statement
             $stmt = $this->prepareStatement($query);
-            // $stmt = $this->conn->prepare($query);
 
             //clean data
             $this->name = htmlspecialchars(strip_tags($this->name));
@@ -53,6 +51,54 @@
             printf("Error: %s.\n", $stmt->error);
 
             return false;
+        }
+
+        //get stock number
+        private function getStockNumber() {
+            $query = 'SELECT available_unit FROM ' . $this->table. ' 
+            WHERE id = :id';
+
+            $stmt = $this->prepareStatement($query);
+            
+            $this->id = htmlspecialchars(strip_tags($this->id));
+            
+            $stmt->bindParam('id', $this->id);
+            
+            $stmt->execute();            
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $row['available_unit'];
+        } 
+
+        //increase stock
+        public function increaseStock() {
+            //query 
+            $query = 'UPDATE ' . $this->table . ' 
+            SET available_unit = :updated_unit 
+            WHERE id = :id';
+            
+            $stmt = $this->prepareStatement($query);
+            
+            //clean data
+            $this->id = htmlspecialchars(strip_tags($this->id));
+            $this->available_unit = htmlspecialchars(strip_tags($this->available_unit));
+            
+            $updated_unit = $this->getStockNumber() + $this->available_unit;
+            //bind parameter
+            $stmt->bindParam(':updated_unit', $updated_unit);
+            $stmt->bindParam(':id', $this->id);
+
+            // Execute query
+            if($stmt->execute()) {
+                return true;
+            }
+
+            // Print error if something goes wrong
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
+
+            
         }
 
 
