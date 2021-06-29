@@ -68,7 +68,7 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $row['available_unit'];
-        } 
+        }
 
         //increase stock
         public function increaseStock() {
@@ -96,10 +96,16 @@
             // Print error if something goes wrong
             printf("Error: %s.\n", $stmt->error);
 
-            return false;
-
-            
+            return false;            
         }
+
+        //decrease stock unit
+        // public function decreaseStock() {
+        //     //query 
+        //     $query = 'UPDATE ' . $this->table . ' 
+        //     SET available_unit = :updated_unit 
+        //     WHERE id = :id';
+        // }
 
 
     }

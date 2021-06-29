@@ -18,11 +18,12 @@
     //getting raw data
     $data = json_decode(file_get_contents("php://input"));
     
+
     $prod->name = $data->name;
     $prod->price = $data->price;
     $prod->available_unit = $data->available_unit;
     $prod->taste = $data->taste;
-    
+
     //storing product
     if($prod->store()) {
         echo json_encode(
@@ -34,5 +35,4 @@
             array('message' => 'Post couldnt be created')
         );
     }
-
 ?>
