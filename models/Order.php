@@ -50,8 +50,7 @@
             
             
             $stmt2->bindParam(':id', $this->id);
-            // $stmt2->bindParam(':product_id', $this->product_id);
-            // $stmt2->bindParam(':quantity', $this->quantity);
+
 
             if($stmt1->execute() ) {
                 foreach(array_combine($this->product_id, $this->quantity) as $id => $quantity) {
@@ -69,6 +68,27 @@
 
         }
 
+        public function generateInvoice() {
+            $query = 'SELECT 
+            ol.product_id, 
+            ol.quantity, 
+            p.name, 
+            p.price*ol.quantity AS PRICE, 
+            ot.id, 
+            ot.address, 
+            ot.phone 
+            FROM '. $this->table2. ' ol JOIN '. $this->table1. ' ot 
+            ON ol.order_id = ot.id 
+            JOIN product p
+            ON ol.product_id = p.id 
+            WHERE ol.order_id = :order_id';
+
+            $stmt = $this->prepareStatement($query);
+            $stmt->bindParam(':order_id', $this->order_id);
+            $stmt->execute();
+            return $stmt;
+            
+        }
 
 
 
