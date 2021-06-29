@@ -25,9 +25,33 @@
         }
 
         private function prepareStatement($querry) {
-            return $this->conn->prepare($querry);
-            
+            return $this->conn->prepare($querry);            
         }
+
+        // private function checkProductAvailability() {
+        //     $query = 'SELECT avaiable_unit FROM product WHERE id = :id';
+
+        //     $products = array();
+        //     $products['id'] = array();
+        //     $products['avail'] = array();
+        //     $products['update_needed'] = array();
+
+        //     foreach($this->product_id as $product) {
+        //         try {
+        //             $stmt = $this->prepareStatement($query);
+        //             $stmt->bindParam(':id', $this->id);
+        //             $stmt->execute();
+        //             $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        //             extract($row);
+
+        //         }
+        //         catch(PDOException $e) {
+        //             echo $e->getMessage();
+        //         }
+        //     }
+            
+
+        // }
         
         public function executeOrder() {
             $query1 = 'INSERT INTO '. $this->table1 . ' 
@@ -71,6 +95,7 @@
             ol.product_id, 
             ol.quantity, 
             p.name, 
+            p.available_unit,
             p.price*ol.quantity AS PRICE, 
             ot.id, 
             ot.address, 
