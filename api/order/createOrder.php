@@ -18,6 +18,25 @@
     //getting raw data
     $data = json_decode(file_get_contents("php://input"));
 
+
+    $order->id = uniqid('ORD');
+    $order->phone = $data->phone;
+    $order->address = $data->address;
+    $order->delivery_status = $data->delivery_status;
+    $order->product_id = $data->product_id;
+    $order->quantity = $data->quantity;
+    $order->total_price = $data->total_price;
     
+
+    if($order->executeOrder()) {
+        echo json_encode(
+            array('mesage' => 'Order has been executed')
+        );
+    }
+    else {
+        echo json_encode(
+            array('message' => 'Couldnt order')
+        );
+    }
 
 ?>

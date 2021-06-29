@@ -26,6 +26,10 @@
             
         }
 
+        public function calculateTotalPrice() {
+
+        }
+
         
         public function executeOrder() {
             $query1 = 'INSERT INTO '. $this->table1 . ' 
@@ -46,12 +50,14 @@
             
             
             $stmt2->bindParam(':id', $this->id);
-            $stmt2->bindParam(':product_id', $this->product_id);
-            $stmt2->bindParam(':quantity', $this->quantity);
+            // $stmt2->bindParam(':product_id', $this->product_id);
+            // $stmt2->bindParam(':quantity', $this->quantity);
 
             if($stmt1->execute() ) {
-                foreach($this->product_id as $product) {
-                    
+                foreach(array_combine($this->product_id, $this->quantity) as $id => $quantity) {
+                    $stmt2->bindParam(':product_id', $id);
+                    $stmt2->bindParam(':quantity', $quantity);
+                    $stmt2->execute();
                 }
                 
                 return true;
