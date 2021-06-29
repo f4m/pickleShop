@@ -99,13 +99,27 @@
             return false;            
         }
 
-        //decrease stock unit
-        // public function decreaseStock() {
-        //     //query 
-        //     $query = 'UPDATE ' . $this->table . ' 
-        //     SET available_unit = :updated_unit 
-        //     WHERE id = :id';
-        // }
+        //update stock upon delivery
+        public function decreaseStock() {
+            $query = 'UPDATE ' . $this->table . ' 
+            SET available_unit = :updated_unit 
+            WHERE id = :id';
+
+            $stmt = $this->prepareStatement($query);
+
+            $stmt->bindParam(':updated_unit', $this->updated_unit);
+            $stmt->bindParam(':id', $this->id);
+
+            if($stmt->execute()) {
+                return true;
+            }
+
+            // Print error if something goes wrong
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
+
+        }
 
 
     }

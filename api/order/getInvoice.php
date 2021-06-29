@@ -16,7 +16,6 @@
     $result = $order->generateInvoice();
 
     $invoice = array();
-    // $invoice['id'] = array();
     $invoice['name'] = array();
     $invoice['prices'] = array();
     $invoice['quantity'] = array();

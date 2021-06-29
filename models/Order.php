@@ -1,8 +1,11 @@
 <?php 
+
+    include_once 'product.php';
+
     class Order {
         private $conn;
         private $table1 = 'order_tbl';
-        private $table2 = 'product_order_line';
+        private $table2 = 'product_order_line';        
         
         //table1 properties
         public $id;
@@ -25,11 +28,6 @@
             return $this->conn->prepare($querry);
             
         }
-
-        public function calculateTotalPrice() {
-
-        }
-
         
         public function executeOrder() {
             $query1 = 'INSERT INTO '. $this->table1 . ' 
@@ -89,6 +87,58 @@
             return $stmt;
             
         }
+
+        public function updateOnDelivery() {
+            $query = 'SELECT p.available_unit, ol.quantity, ol.product_id FROM '
+            .$this->table2. ' ol JOIN product p 
+            ON p.id = ol.product_id WHERE ol.order_id = :id';
+
+            $query1 = 'UPDATE ' . $this->table1 . ' 
+            SET delivery_status = :delivery_status 
+            WHERE id = :id';
+    
+            $stmt1 = $this->prepareStatement($query1);
+            $stmt1->bindParam(':id', $this->id);
+            $stmt1->bindParam(':delivery_status', $this->delivery_status);
+            $stmt1->execute();
+
+            
+            try {
+                $stmt = $this->prepareStatement($query);
+                $stmt->bindParam(':id', $this->id);
+                $stmt->execute();
+            }
+            catch(PDOException $e) {
+                echo $e->getMessage();
+            }
+            
+            $productListing = array();
+            $productListing['products'] = array();
+            $productListing['sold_unit'] = array();
+            $productListing['available_unit'] = array();
+
+        
+            while($rows = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                extract($rows);
+
+                array_push($productListing['products'], $product_id);
+                array_push($productListing['sold_unit'], $quantity);
+                array_push($productListing['available_unit'], $available_unit);
+            }
+            
+            $product = new Product($this->conn);
+            for($i = 0; $i<count($productListing['products']); $i++) {
+                $product->updated_unit = $productListing['available_unit'][$i] - $productListing['sold_unit'][$i];
+                $product->id = $productListing['products'][$i];
+                if(!$product->decreaseStock()) {
+                    return false;
+                }
+            }
+            return true;
+    
+
+        }
+
 
 
 
