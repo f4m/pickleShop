@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "0152c489-693f-4783-beb6-94631ab45f17",
+		"name": "pickle Shop API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost/pickleShop/api/product/increase.php",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\" : \"7\",\r\n    \"available_unit\" : \"25\"\r\n\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost/pickleShop/api/product/increase.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"pickleShop",
+						"api",
+						"product",
+						"increase.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/pickleShop/api/order/createOrder.php",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone\" : \"+990154232323\",\r\n    \"address\" : \"banani, dhaka\",\r\n    \"delivery_status\" : \"false\",\r\n    \"product_id\" : [\"4\", \"1\"],\r\n    \"quantity\" : [\"3\", \"2\"],\r\n    \"total_price\" : \"2000\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost/pickleShop/api/order/createOrder.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"pickleShop",
+						"api",
+						"order",
+						"createOrder.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/pickleShop/api/order/getInvoice.php?order_id=ORD60dae3afce27d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/pickleShop/api/order/getInvoice.php?order_id=ORD60dae3afce27d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"pickleShop",
+						"api",
+						"order",
+						"getInvoice.php"
+					],
+					"query": [
+						{
+							"key": "order_id",
+							"value": "ORD60dae3afce27d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/pickleShop/api/order/update.php",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"ORD60dae3afce27d\",\r\n    \"delivery_status\" : \"1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost/pickleShop/api/order/update.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"pickleShop",
+						"api",
+						"order",
+						"update.php"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
